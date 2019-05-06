@@ -1,0 +1,51 @@
+<ui:component
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:cc="http://java.sun.com/jsf/composite"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui">
+    <cc:interface componentType="extendedInput">
+        <cc:attribute name="value" type="java.lang.Object"
+            shortDescription="value for bean property" />
+        <cc:attribute name="fieldObject" type="com.hersa.web.faces.AttributeMap" required="true"
+            		  shortDescription="name of the attribute we are working with" />
+		<cc:attribute name="innerStyle" type="java.lang.String" default="ui-panelgrid-blank"
+            		  shortDescription="name of the attribute we are working with" /> 
+		<cc:attribute name="defaultValidator" type="java.lang.Boolean" default="true"
+            		  shortDescription="name of the attribute we are working with" />       
+		<cc:attribute name="required" type="java.lang.Boolean" default="false"
+            		  shortDescription="name of the attribute we are working with" />             		        		       		  		  
+    </cc:interface>
+    <cc:implementation>
+        <span id="#{cc.clientId}" style="white-space:nowrap">
+       		<p:panelGrid styleClass="#{cc.attrs.innerStyle}"
+       					 layout="grid" columns="1">
+       			<p:column rendered="#{cc.displaySelectOne}">
+       				<p:selectOneMenu id="day" value="#{cc.attrs.value}" required="#{cc.attrs.required}">
+						<f:selectItem itemLabel="Select One" itemValue="x" />
+						<f:selectItems value="#{cc.choices.entrySet()}" var="opt"
+									   itemLabel="#{opt.value}" itemValue="#{opt.key}" />
+						<f:validator validatorId="com.hersa.web.faces.validator.ExtendedInputValidator"/>			   
+					</p:selectOneMenu>
+       			</p:column>
+       			<p:column rendered="#{not cc.displaySelectOne}">
+       				<p:inputText id="normalInput"
+       							 rendered="#{cc.attrs.fieldObject.type eq 'text'}" 
+       							 type="#{cc.attrs.fieldObject.type}" 
+       							 value="#{cc.attrs.value}" 
+       							 required="#{cc.attrs.required}">
+       					<f:validator validatorId="com.hersa.web.faces.validator.ExtendedInputValidator"/>
+       				</p:inputText>
+       				<p:calendar id="calendarInput"
+       							rendered="#{cc.attrs.fieldObject.type eq 'date'}" 
+       							value="#{cc.attrs.value}" 
+       							pattern="yyyy-MM-dd HH:mm:ss"
+       							required="#{cc.attrs.required}">
+       				</p:calendar>
+       			</p:column>
+       		</p:panelGrid>
+        </span>
+    </cc:implementation>
+</ui:component>
